@@ -15,7 +15,7 @@ del main_data_about_group[2]
 #Функция создания файлов
 def make_files(name_file, data):
   df = pd.DataFrame(data).drop_duplicates()
-  df.to_csv(f"{name_file}.csv", sep=';', index=False, encoding="utf-8-sig"))
+  df.to_csv(f"{name_file}.csv", sep=';', index=False, encoding="utf-8-sig")
 
 
 #Функция для упрощения запросов
