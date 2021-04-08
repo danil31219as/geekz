@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>My First Dashboard</title>
+</head>
+<body>
+<div style="height: 400px; width: 600px">
+    <canvas id="myChart"></canvas>
+</div>
+<div style="height: 400px; width: 600px">
+    <canvas id="myChart2"></canvas>
+</div>
+<div style="height: 400px; width: 600px">
+    <canvas id="speedChart"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script type="text/javascript">
+    var data = {{ data }}
+        function graph() {
+            var eID = document.getElementById("graph");
+            var colorVal = eID.options[eID.selectedIndex].value;
+            var ctx = document.getElementById('myChart').getContext('2d');
+            myChart.data.datasets[0].data = data[colorVal]
+            alert(myChart.data.datasets[0].data)
+            if (colorVal == "A") {
+                myChart.data.datasets[0].data = data["testA"]
+
+            } else if (colorVal == "B") {
+                myChart.data.datasets[0].data = data["testB"]
+            }
+
+            myChart.update()
+
+
+        }
+</script>
+<script>// Doughnut chart
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Dairy', 'Fruits', 'Lean meats', 'Vegetables', 'Whole grains'],
+        datasets: [{
+            data: data[1],
+            backgroundColor: {{ colors |safe }},
+            borderWidth: 0.5,
+            borderColor: '#ddd'
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Recommended Daily Diet',
+            position: 'top',
+            fontSize: 16,
+            fontColor: '#111',
+            padding: 20
+        },
+        legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+                boxWidth: 20,
+                fontColor: '#111',
+                padding: 15
+            }
+        },
+        tooltips: {
+            enabled: false
+        },
+        plugins: {
+            datalabels: {
+                color: '#111',
+                textAlign: 'center',
+                font: {
+                    lineHeight: 1.6
+                },
+                formatter: function (value, ctx) {
+                    return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value + '%';
+                }
+            }
+        }
+    }
+});
+</script>
+
+<select id="graph" onchange="graph()">
+    <option value=1 selected="selected">Red</option>
+    <option value=2>Blue</option>
+</select>
+<script>// Vertical bar chart
+var ctx = document.getElementById('myChart2').getContext('2d');
+var myChart2 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Hong Kong', 'Macau', 'Japan', 'Switzerland', 'Spain', 'Singapore'],
+        datasets: [{
+            label: 'Life expectancy',
+            data: [84.308, 84.188, 84.118, 83.706, 83.5, 83.468],
+            backgroundColor: [
+                'rgba(216, 27, 96, 0.6)',
+                'rgba(3, 169, 244, 0.6)',
+                'rgba(255, 152, 0, 0.6)',
+                'rgba(29, 233, 182, 0.6)',
+                'rgba(156, 39, 176, 0.6)',
+                'rgba(84, 110, 122, 0.6)'
+            ],
+            borderColor: [
+                'rgba(216, 27, 96, 1)',
+                'rgba(3, 169, 244, 1)',
+                'rgba(255, 152, 0, 1)',
+                'rgba(29, 233, 182, 1)',
+                'rgba(156, 39, 176, 1)',
+                'rgba(84, 110, 122, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: 'Life Expectancy by Country',
+            position: 'top',
+            fontSize: 16,
+            padding: 20
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    min: 75
+                }
+            }]
+        }
+    }
+});
+</script>
+
+<script>var speedCanvas = document.getElementById("speedChart");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 18;
+
+var speedData = {
+    labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
+    datasets: [{
+        label: "Car Speed (mph)",
+        data: [0, 59, 75, 20, 20, 55, 40],
+        lineTension: 0,
+        fill: false,
+        borderColor: 'orange',
+        backgroundColor: 'transparent',
+        borderDash: [5, 5],
+        pointBorderColor: 'orange',
+        pointBackgroundColor: 'rgba(255,150,0,0.5)',
+        pointRadius: 5,
+        pointHoverRadius: 10,
+        pointHitRadius: 30,
+        pointBorderWidth: 2,
+        pointStyle: 'rectRounded'
+    }]
+};
+
+var chartOptions = {
+    legend: {
+        display: true,
+        position: 'top',
+        labels: {
+            boxWidth: 80,
+            fontColor: 'black'
+        }
+    }
+};
+
+var lineChart = new Chart(speedCanvas, {
+    type: 'line',
+    data: speedData,
+    options: chartOptions
+});</script>
+</body>
+</html>
